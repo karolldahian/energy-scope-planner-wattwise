@@ -1,0 +1,267 @@
+
+# ============================================================
+# WATTWISE - CONTEXTO SEGURO DE CONSTRUCCION DOCKER
+# ============================================================
+# Proyecto: WattWise
+#
+# Objetivo:
+# Incluir solamente los recursos estrictamente necesarios para
+# construir la imagen de ejecucion de WattWise.
+#
+# Estrategia:
+# 1. Denegar todo por defecto.
+# 2. Autorizar archivos esenciales de forma explicita.
+# 3. Permitir solamente codigo Python dentro de src/.
+# 4. Autorizar exclusivamente los recursos ECharts requeridos.
+# 5. Permitir una unica configuracion compartida de Streamlit.
+# 6. Excluir datos privados, credenciales y archivos generados.
+# 7. Autorizar solamente las tres plantillas maestras oficiales.
+#
+# IMPORTANTE:
+# Este archivo protege el contexto de construccion.
+# No sustituye la validacion del Dockerfile ni el escaneo
+# de secretos y datos sensibles.
+# ============================================================
+
+
+# ------------------------------------------------------------
+# 1. EXCLUSION GENERAL
+# ------------------------------------------------------------
+
+*
+
+
+# ------------------------------------------------------------
+# 2. ARCHIVOS ESENCIALES EN LA RAIZ
+# ------------------------------------------------------------
+
+!app.py
+!pyproject.toml
+!uv.lock
+!.python-version
+
+# Necesario si pyproject.toml referencia README.md.
+!README.md
+
+
+# ------------------------------------------------------------
+# 3. CODIGO FUENTE PYTHON
+# ------------------------------------------------------------
+
+# Autorizar el directorio principal y sus subdirectorios.
+!src/
+!src/**/
+
+# Autorizar exclusivamente archivos Python.
+!src/**/*.py
+
+
+# ------------------------------------------------------------
+# 4. COMPONENTE VISUAL APACHE ECHARTS
+# ------------------------------------------------------------
+
+!componentes/
+!componentes/echarts/
+
+# Recursos estaticos autorizados.
+!componentes/echarts/index.html
+!componentes/echarts/estilos.css
+!componentes/echarts/echarts.js
+
+
+# ------------------------------------------------------------
+# 5. CONFIGURACION COMPARTIDA DE STREAMLIT
+# ------------------------------------------------------------
+
+# Autorizar el acceso al directorio.
+!.streamlit/
+
+# Excluir todo su contenido por defecto.
+.streamlit/*
+
+# Permitir unicamente la configuracion compartida.
+!.streamlit/config.toml
+
+
+# ------------------------------------------------------------
+# 6. PROTECCION CONTRA CREDENCIALES Y SECRETOS
+# ------------------------------------------------------------
+
+# Archivos de entorno.
+**/.env
+**/.env.*
+
+# Carpetas y archivos privados.
+**/secrets/
+**/credenciales/
+**/secrets.toml
+**/credentials.toml
+
+# Credenciales y llaves.
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+**/*.jks
+**/*.keystore
+**/*.asc
+
+# Configuraciones de proveedores externos.
+**/.aws/
+**/.azure/
+
+
+# ------------------------------------------------------------
+# 7. PERSISTENCIA LOCAL Y BASES DE DATOS
+# ------------------------------------------------------------
+
+# Archivos principales de SQLite.
+**/*.db
+**/*.db-*
+**/*.db.*
+**/*.sqlite
+**/*.sqlite-*
+**/*.sqlite.*
+**/*.sqlite3
+**/*.sqlite3-*
+**/*.sqlite3.*
+
+# Archivos transaccionales de SQLite.
+**/*-wal
+**/*-shm
+
+# Respaldos y volcados.
+**/*.bak
+**/*.backup
+**/*.bak.*
+**/*.backup.*
+**/*.old
+**/*.orig
+**/*.dump
+**/*.sql.gz
+
+
+# ------------------------------------------------------------
+# 8. DATOS ELECTRICOS Y ARCHIVOS DEL USUARIO
+# ------------------------------------------------------------
+
+# Directorios privados.
+**/datos_locales/
+**/datos_reales/
+**/datos_privados/
+**/datos_temporales/
+**/uploads/
+**/cargas/
+
+# Archivos tabulares no autorizados.
+**/*.xlsx
+**/*.xls
+**/*.xlsm
+**/*.xlsb
+**/*.csv
+**/*.tsv
+**/*.parquet
+**/*.feather
+**/*.ods
+
+# Datos estructurados.
+**/*.jsonl
+**/*.ndjson
+
+
+# ------------------------------------------------------------
+# 9. ENTORNOS VIRTUALES Y CACHES
+# ------------------------------------------------------------
+
+**/.venv/
+**/venv/
+**/env/
+**/__pycache__/
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.ipynb_checkpoints/
+
+# Archivos de Python compilados.
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+
+# ------------------------------------------------------------
+# 10. TEMPORALES, INFORMES Y MODELOS GENERADOS
+# ------------------------------------------------------------
+
+# Directorios temporales.
+**/temp/
+**/tmp/
+**/logs/
+
+# Archivos temporales.
+**/*.tmp
+**/*.temp
+**/*.part
+**/*.log
+
+# Informes y resultados.
+**/*.pdf
+**/capturas/
+**/graficas_exportadas/
+**/imagenes_generadas/
+**/informes_generados/
+**/reportes_generados/
+**/exportaciones/
+**/resultados/
+**/salidas/
+
+# Artefactos de aprendizaje automatico.
+**/modelos_entrenados/
+**/artefactos_ml/
+**/experimentos_locales/
+**/ejecuciones_ml/
+
+**/*.joblib
+**/*.pkl
+**/*.pickle
+**/*.onnx
+
+
+# ------------------------------------------------------------
+# 11. EXCEPCIONES FINALES: PLANTILLAS MAESTRAS
+# ------------------------------------------------------------
+
+# Autorizar el directorio de plantillas.
+!plantillas/
+
+# Permitir exclusivamente los tres archivos oficiales.
+!plantillas/plantilla_inventario.xlsx
+!plantillas/plantilla_mediciones.xlsx
+!plantillas/plantilla_motores.xlsx
+
+
+# ------------------------------------------------------------
+# 12. ARCHIVOS DE DESARROLLO EXCLUIDOS POR DEFECTO
+# ------------------------------------------------------------
+
+# Permanecen excluidos mediante la regla inicial (*).
+#
+# .git/
+# .github/
+# .vscode/
+# .idea/
+# .gitignore
+# .dockerignore
+# Dockerfile
+# Makefile
+# .pre-commit-config.yaml
+# AGENTS.md
+# SECURITY.md
+# CHANGELOG.md
+# scripts/
+# pruebas/
+# agentes/
+# documentacion/
+# datos_locales/
+#
+# README.md se permite por compatibilidad con el empaquetado.
+# ============================================================

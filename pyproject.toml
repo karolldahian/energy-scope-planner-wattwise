@@ -1,0 +1,336 @@
+
+# ============================================================
+# WATTWISE - CONFIGURACION CENTRAL DEL PROYECTO
+# ============================================================
+# Proyecto: WattWise
+# Aplicacion local de analisis electrico y energetico.
+#
+# Este archivo define:
+# - Metadatos e identidad del paquete.
+# - Dependencias de ejecucion local.
+# - Herramientas de desarrollo y seguridad.
+# - Empaquetado de la estructura src/wattwise.
+# - Reglas de Ruff, mypy, pytest, coverage y Bandit.
+#
+# uv.lock sera generado mediante uv lock.
+# No debe editarse manualmente.
+# ============================================================
+
+
+# ------------------------------------------------------------
+# 1. IDENTIDAD DEL PROYECTO
+# ------------------------------------------------------------
+
+[project]
+name = "wattwise"
+version = "0.1.0"
+description = "Aplicacion local de analisis electrico y energetico"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+
+# Identificador SPDX para una licencia propietaria.
+# La licencia y sus permisos se documentaran por separado.
+license = "LicenseRef-Proprietary"
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+
+    # Impide la publicacion accidental en PyPI.
+    "Private :: Do Not Upload",
+]
+
+dependencies = [
+    # Interfaz web local.
+    "streamlit>=1.40,<2",
+
+    # Procesamiento de datos y Excel.
+    "pandas>=2.2,<3",
+    "numpy>=1.26,<3",
+    "openpyxl>=3.1,<4",
+
+    # Modelos y validacion de datos.
+    "pydantic>=2.9,<3",
+
+    # Configuracion local mediante archivos .env opcionales.
+    "python-dotenv>=1.0,<2",
+
+    # Aprendizaje automatico clasico local.
+    "scikit-learn>=1.5,<2",
+
+    # Generacion de informes PDF.
+    "reportlab>=4.2,<5",
+]
+
+
+# ------------------------------------------------------------
+# 2. CONSTRUCCION DEL PAQUETE PYTHON
+# ------------------------------------------------------------
+
+[build-system]
+requires = [
+    "uv_build>=0.13.7,<0.14",
+]
+build-backend = "uv_build"
+
+
+# ------------------------------------------------------------
+# 3. CONFIGURACION DE UV
+# ------------------------------------------------------------
+
+[tool.uv]
+
+# Incluir herramientas de desarrollo en el entorno local.
+# En produccion se empleara uv sync --no-dev --locked.
+default-groups = ["dev"]
+
+
+# ------------------------------------------------------------
+# 4. DEPENDENCIAS DE DESARROLLO Y AUDITORIA
+# ------------------------------------------------------------
+
+[dependency-groups]
+
+dev = [
+    # Formato y analisis estatico.
+    "ruff>=0.11,<1",
+    "mypy>=1.15,<2",
+
+    # Pruebas y cobertura.
+    "pytest>=8.3,<10",
+    "pytest-cov>=6,<8",
+
+    # Automatizacion antes de commits.
+    "pre-commit>=4,<5",
+
+    # Seguridad del codigo y de las dependencias.
+    "bandit>=1.8,<2",
+    "pip-audit>=2.8,<3",
+
+    # Anotaciones de tipos para librerias externas.
+    "pandas-stubs>=2.2,<3",
+    "types-openpyxl>=3.1,<4",
+    "types-reportlab>=4,<5",
+]
+
+
+# ------------------------------------------------------------
+# 5. RUFF - CONFIGURACION GENERAL
+# ------------------------------------------------------------
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+indent-width = 4
+respect-gitignore = true
+
+include = [
+    "*.py",
+    "*.pyi",
+    "pyproject.toml",
+]
+
+extend-exclude = [
+    ".uv",
+    ".uv-cache",
+    "datos_locales",
+    "datos_reales",
+    "datos_privados",
+    "datos_temporales",
+    "modelos_entrenados",
+    "artefactos_ml",
+]
+
+
+# ------------------------------------------------------------
+# 6. RUFF - REGLAS DE CALIDAD
+# ------------------------------------------------------------
+
+[tool.ruff.lint]
+
+select = [
+    "E4",   # Errores de formato esenciales.
+    "E7",   # Errores de estructura.
+    "E9",   # Errores graves de sintaxis.
+    "F",    # Pyflakes.
+    "I",    # Organizacion de importaciones.
+    "B",    # Posibles errores de programacion.
+    "UP",   # Sintaxis Python moderna.
+    "SIM",  # Simplificacion de codigo.
+    "C90",  # Complejidad ciclomatica.
+    "D",    # Documentacion de codigo publico.
+]
+
+ignore = [
+    # No exigir docstring en todos los modulos.
+    "D100",
+
+    # Permitir __init__.py sin docstring.
+    "D104",
+
+    # No exigir documentacion repetitiva en __init__.
+    "D107",
+
+    # Convencion de estilo incompatible con D211.
+    "D203",
+
+    # Convencion de estilo incompatible con D212.
+    "D213",
+]
+
+fixable = ["ALL"]
+unfixable = []
+
+
+# ------------------------------------------------------------
+# 7. RUFF - COMPLEJIDAD Y DOCSTRINGS
+# ------------------------------------------------------------
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+
+# Las pruebas no necesitan docstrings individuales.
+"tests/**/*.py" = ["D"]
+
+# Los scripts utilitarios mantienen las reglas de calidad,
+# pero no requieren docstrings publicas exhaustivas.
+"scripts/**/*.py" = ["D"]
+
+
+# ------------------------------------------------------------
+# 8. RUFF - FORMATO AUTOMATICO
+# ------------------------------------------------------------
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+skip-magic-trailing-comma = false
+docstring-code-format = true
+
+[tool.ruff.lint.isort]
+known-first-party = ["wattwise"]
+combine-as-imports = true
+
+
+# ------------------------------------------------------------
+# 9. MYPY - VERIFICACION ESTRICTA DE TIPOS
+# ------------------------------------------------------------
+
+[tool.mypy]
+python_version = "3.12"
+
+# Permitir resolver el paquete en la estructura src/.
+mypy_path = "src"
+
+# Revisar todo el paquete WattWise.
+packages = ["wattwise"]
+
+strict = true
+warn_unused_configs = true
+show_error_codes = true
+pretty = true
+follow_imports = "normal"
+
+# No se silencian errores globalmente.
+# Las excepciones para bibliotecas externas se agregaran
+# solo si aparecen errores demostrables de tipado.
+
+
+# ------------------------------------------------------------
+# 10. PYTEST - DESCUBRIMIENTO DE PRUEBAS
+# ------------------------------------------------------------
+
+[tool.pytest.ini_options]
+minversion = "8.3"
+
+# Facilitar importaciones desde src/ durante el desarrollo.
+pythonpath = ["src"]
+
+testpaths = [
+    "tests",
+]
+
+python_files = [
+    "test_*.py",
+]
+
+python_functions = [
+    "test_*",
+]
+
+python_classes = [
+    "Test*",
+]
+
+addopts = [
+    "-ra",
+    "--strict-markers",
+]
+
+markers = [
+    "critica: valida reglas de negocio esenciales",
+    "integracion: verifica la interoperabilidad de componentes",
+    "extremo_a_extremo: comprueba flujos completos",
+    "seguridad: valida restricciones y controles de seguridad",
+    "lenta: identifica pruebas de mayor duracion",
+]
+
+filterwarnings = [
+    "error::DeprecationWarning:wattwise.*",
+]
+
+
+# ------------------------------------------------------------
+# 11. COVERAGE - COBERTURA DE PRUEBAS
+# ------------------------------------------------------------
+
+[tool.coverage.run]
+branch = true
+source = ["wattwise"]
+
+omit = [
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+precision = 2
+
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+]
+
+
+# ------------------------------------------------------------
+# 12. BANDIT - ANALISIS ESTATICO DE SEGURIDAD
+# ------------------------------------------------------------
+
+[tool.bandit]
+
+targets = [
+    "src/wattwise",
+    "scripts",
+]
+
+exclude_dirs = [
+    "tests",
+    ".venv",
+]
+
+skips = []
+
+
+# ============================================================
+# FIN DE PYPROJECT.TOML - WATTWISE
+# ============================================================

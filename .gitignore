@@ -1,0 +1,273 @@
+
+# ============================================================
+# WATTWISE - CONFIGURACION DE ARCHIVOS IGNORADOS POR GIT
+# ============================================================
+# Proyecto: WattWise
+# Objetivo: Proteger datos locales confidenciales y evitar versionar
+#           artefactos generados o configuraciones de entorno.
+# ============================================================
+
+
+# ------------------------------------------------------------
+# 1. ENTORNOS VIRTUALES Y GESTORES DE PYTHON (uv / pip)
+# ------------------------------------------------------------
+
+.venv/
+venv/
+env/
+ENV/
+.uv/
+.uv-cache/
+.python-version.local
+
+
+# ------------------------------------------------------------
+# 2. CACHE Y ARTEFACTOS GENERADOS POR PYTHON
+# ------------------------------------------------------------
+
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+.hypothesis/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.prof
+
+
+# ------------------------------------------------------------
+# 3. DISTRIBUCIONES Y ARTEFACTOS DE COMPILACION
+# ------------------------------------------------------------
+
+build/
+dist/
+*.egg-info/
+*.egg
+*.whl
+pip-wheel-metadata/
+site/
+
+
+# ------------------------------------------------------------
+# 4. CREDENCIALES, SECRETOS Y CONFIGURACION PRIVADA
+# ------------------------------------------------------------
+
+.env
+.env.*
+!.env.example
+
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.asc
+
+secrets/
+credenciales/
+.streamlit/secrets.toml
+
+# Configuracion de nube y terceros
+.aws/
+.azure/
+
+
+# ------------------------------------------------------------
+# 5. BASES DE DATOS, ARCHIVOS WAL Y COPIAS DE SEGURIDAD
+# ------------------------------------------------------------
+
+*.db
+*.db-*
+*.db.*
+*.sqlite
+*.sqlite-*
+*.sqlite.*
+*.sqlite3
+*.sqlite3-*
+*.sqlite3.*
+
+# Archivos de bloqueo y memoria transaccional SQLite
+*-wal
+*-shm
+
+# Respaldos y volcados
+*.bak
+*.backup
+*.bak.*
+*.backup.*
+*.old
+*.orig
+*.dump
+*.sql.gz
+
+backups/
+copias_seguridad/
+
+
+# ------------------------------------------------------------
+# 6. DATOS ELECTRICOS, ARCHIVOS DEL USUARIO Y ALMACENAMIENTO LOCAL
+# ------------------------------------------------------------
+
+# Archivos tabulares de mediciones e inventarios
+*.xlsx
+*.xls
+*.xlsm
+*.xlsb
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.ods
+
+# Formatos estructurados
+*.jsonl
+*.ndjson
+
+# Directorios de datos del usuario y temporales
+datos_locales/
+datos_reales/
+datos_privados/
+datos_temporales/
+uploads/
+cargas/
+temp/
+tmp/
+
+
+# ------------------------------------------------------------
+# 7. INFORMES, EXPORTACIONES Y CAPTURAS GENERADAS
+# ------------------------------------------------------------
+
+# Documentos PDF generados
+*.pdf
+
+# Salidas de renderizado, capturas ECharts y reportes
+capturas/
+imagenes_generadas/
+graficas_exportadas/
+informes_generados/
+reportes_generados/
+exportaciones/
+resultados/
+salidas/
+
+# Temporales de procesamiento
+*.tmp
+*.temp
+*.part
+
+
+# ------------------------------------------------------------
+# 8. LOGS Y SEGUIMIENTO DE PROCESOS
+# ------------------------------------------------------------
+
+*.log
+logs/
+*.pid
+*.pid.lock
+*.stackdump
+
+
+# ------------------------------------------------------------
+# 9. EDITORES Y ENTORNOS DE DESARROLLO
+# ------------------------------------------------------------
+
+# Visual Studio Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# JetBrains
+.idea/
+*.iml
+
+# Editores clasicos y workspaces
+*.swp
+*.swo
+*~
+*.sublime-workspace
+*.code-workspace
+
+
+# ------------------------------------------------------------
+# 10. SISTEMAS OPERATIVOS (Windows, macOS, Linux)
+# ------------------------------------------------------------
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100/
+.Trashes/
+.fseventsd/
+
+# Linux
+.directory
+.nfs*
+
+
+# ------------------------------------------------------------
+# 11. NOTEBOOKS INTERACTIVOS
+# ------------------------------------------------------------
+
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+
+# ------------------------------------------------------------
+# 12. ARTEFACTOS Y EJECUCIONES DE MACHINE LEARNING
+# ------------------------------------------------------------
+
+modelos_entrenados/
+artefactos_ml/
+experimentos_locales/
+ejecuciones_ml/
+
+*.joblib
+*.pkl
+*.pickle
+*.onnx
+
+
+# ------------------------------------------------------------
+# 13. REPORTES DE HERRAMIENTAS DE SEGURIDAD Y QA
+# ------------------------------------------------------------
+
+bandit-report.json
+pip-audit-report.json
+gitleaks-report.json
+safety-report.json
+
+junit.xml
+test-results/
+resultados_pruebas/
+
+
+# ------------------------------------------------------------
+# 14. EXCEPCIONES: PLANTILLAS MAESTRAS DE WATTWISE
+# ------------------------------------------------------------
+
+# Permitir el directorio y unicamente las tres plantillas oficiales
+!plantillas/
+!plantillas/plantilla_inventario.xlsx
+!plantillas/plantilla_mediciones.xlsx
+!plantillas/plantilla_motores.xlsx
